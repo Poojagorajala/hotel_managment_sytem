@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Rooms</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/rooms/add">Add Room</a></li>
+            </ul>
+        </nav>
+        <h1>All Rooms</h1>
+    </header>
+
+    <main class="container">
+        <h2>List of Rooms</h2>
+        <% if (rooms && rooms.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room ID</th>
+                        <th>Hotel ID</th>
+                        <th>Room Type</th>
+                        <th>Price</th>
+                        <th>Availability</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% rooms.forEach(room => { %>
+                        <tr>
+                            <td><%= room.room_id %></td>
+                            <td><%= room.hotel_id %></td>
+                            <td><%= room.room_type %></td>
+                            <td><%= room.price %></td>
+                            <td><%= room.availability %></td>
+                            <td class="actions">
+                                <a href="/rooms/<%= room.room_id %>/details">Details</a>
+                                <a href="/rooms/<%= room.room_id %>/edit">Edit</a>
+                                <form action="/rooms/<%= room.room_id %>/delete" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this room?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No rooms available.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome Hotel App</p>
+    </footer>
+</body>
+</html>

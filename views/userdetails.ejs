@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
+        </nav>
+        <h1>User Details</h1>
+    </header>
+
+    <main class="container">
+        <h2>User Information</h2>
+
+        <% if (user) { %>
+            <div class="user-details">
+                <p><strong>User ID:</strong> <%= user.user_id %></p>
+                <p><strong>Name:</strong> <%= user.name %></p>
+                <p><strong>Email:</strong> <%= user.email %></p>
+                <p><strong>Role:</strong> <%= user.role %></p>
+                <div class="actions">
+                    <a href="/users/<%= user.user_id %>/edit" class="btn btn-primary">Edit</a>
+                    <a href="/users/<%= user.user_id %>/delete" class="btn btn-danger">Delete</a>
+                    <a href="/users" class="btn btn-secondary">Back to Users List</a>
+                </div>
+            </div>
+        <% } else { %>
+            <p class="error-message">User not found.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome Website</p>
+    </footer>
+</body>
+</html>

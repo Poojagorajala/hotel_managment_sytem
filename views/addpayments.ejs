@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Payment</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/payments">Payments</a></li>
+            </ul>
+        </nav>
+        <h1>Add New Payment</h1>
+    </header>
+
+    <main class="container">
+        <h2>Add New Payment</h2>
+        <form action="/payments/add" method="POST">
+            <div class="form-group">
+                <label for="booking_id">Booking ID:</label>
+                <input type="text" name="booking_id" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" name="amount" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="payment_status">Payment Status:</label>
+                <input type="text" name="payment_status" class="form-control" required>
+                <small>e.g., Pending, Paid, Failed</small>
+            </div>
+            <button type="submit" class="btn btn-success">Add Payment</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome App</p>
+    </footer>
+</body>
+</html>

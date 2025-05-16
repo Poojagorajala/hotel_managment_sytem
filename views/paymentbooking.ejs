@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment for Booking: <%= booking_id %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/payments">Payments</a></li>
+            </ul>
+        </nav>
+        <h1>Payment for Booking ID: <%= booking_id %></h1>
+    </header>
+
+    <main class="container">
+        <h2>Payment Details for Booking ID: <%= booking_id %></h2>
+        <% if (paymentbooking) { %>
+            <p><strong>Payment ID:</strong> <%= paymentbooking.payment_id %></p>
+            <p><strong>Booking ID:</strong> <%= paymentbooking.booking_id %></p>
+            <p><strong>Amount:</strong> <%= paymentbooking.amount %></p>
+            <p><strong>Payment Status:</strong> <%= paymentbooking.payment_status %></p>
+            <a href="/payments/<%= paymentbooking.payment_id %>/edit" class="btn btn-primary">Edit Payment</a>
+            <form action="/payments/<%= paymentbooking.payment_id %>/delete" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this payment?')">Delete</button>
+            </form>
+        <% } else { %>
+            <p>No payment found for booking ID: <%= booking_id %>.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome App</p>
+    </footer>
+</body>
+</html>

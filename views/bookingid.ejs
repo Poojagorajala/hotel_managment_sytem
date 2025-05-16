@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/bookings">Bookings</a></li>
+            </ul>
+        </nav>
+        <h1>Booking Details</h1>
+    </header>
+
+    <main class="container">
+        <h2>Booking Details</h2>
+        <% if (bookingid) { %>
+            <p><strong>Booking ID:</strong> <%= bookingid.booking_id %></p>
+            <p><strong>User ID:</strong> <%= bookingid.user_id %></p>
+            <p><strong>Room ID:</strong> <%= bookingid.room_id %></p>
+            <p><strong>Check-in Date:</strong> <%= bookingid.checkin_date.toLocaleDateString() %></p>
+            <p><strong>Check-out Date:</strong> <%= bookingid.checkout_date.toLocaleDateString() %></p>
+            <a href="/bookings/<%= bookingid.booking_id %>/edit" class="btn btn-primary">Edit Booking</a>
+            <form action="/bookings/<%= bookingid.booking_id %>/delete" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')">Delete</button>
+            </form>
+        <% } else { %>
+            <p>Booking not found.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome Hotel App</p>
+    </footer>
+</body>
+</html>

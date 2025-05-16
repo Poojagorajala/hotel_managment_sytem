@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Hotels</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/hotels/add">Add Hotel</a></li>
+            </ul>
+        </nav>
+        <h1>All Hotels</h1>
+    </header>
+
+    <main class="container">
+        <h2>List of Hotels</h2>
+        <% if (hotels && hotels.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hotel ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% hotels.forEach(hotel => { %>
+                        <tr>
+                            <td><%= hotel.hotel_id %></td>
+                            <td><%= hotel.name %></td>
+                            <td><%= hotel.address %></td>
+                            <td><%= hotel.city %></td>
+                            <td class="actions">
+                                <a href="/hotels/<%= hotel.hotel_id %>">Details</a>
+                                <a href="/hotels/<%= hotel.hotel_id %>/edit">Edit</a>
+                                <form action="/hotels/<%= hotel.hotel_id %>/delete" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No hotels available.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome Hotel App</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/rooms">Rooms</a></li>
+            </ul>
+        </nav>
+        <h1>Room Details</h1>
+    </header>
+
+    <main class="container">
+        <h2>Room Details</h2>
+        <% if (availableroom) { %>
+            <p><strong>Room ID:</strong> <%= availableroom.room_id %></p>
+            <p><strong>Hotel ID:</strong> <%= availableroom.hotel_id %></p>
+            <p><strong>Room Type:</strong> <%= availableroom.room_type %></p>
+            <p><strong>Price:</strong> <%= availableroom.price %></p>
+            <p><strong>Availability:</strong> <%= availableroom.availability %></p>
+            <a href="/rooms/<%= availableroom.room_id %>/edit" class="btn btn-primary">Edit Room</a>
+            <form action="/rooms/<%= availableroom.room_id %>/delete" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this room?')">Delete</button>
+            </form>
+        <% } else { %>
+            <p>Room not found.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome Hotel App</p>
+    </footer>
+</body>
+</html>

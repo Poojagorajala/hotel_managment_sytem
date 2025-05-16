@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Hotel Management Dashboard</h1>
+
+  <div class="dashboard-cards">
+    <div class="card">Total Hotels: <%= totalHotels %></div>
+    <div class="card">Total Bookings: <%= totalBookings %></div>
+    <div class="card">Total Users: <%= totalUsers %></div>
+    <div class="card">Total Payments: <%= totalPayments %></div>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="/hotels">Manage Hotels</a></li>
+    <li><a href="/rooms">Manage Rooms</a></li>
+    <li><a href="/users">Manage Users</a></li>
+    <li><a href="/bookings">Manage Bookings</a></li>
+    <li><a href="/payments">Manage Payments</a></li>
+  </ul>
+
+  <h3>Recent Bookings</h3>
+  <ul>
+    <% recentBookings.forEach(booking => { %>
+      <li>Booking ID: <%= booking.booking_id %> - User: <%= booking.user_id %> - Room: <%= booking.room_id %></li>
+    <% }) %>
+  </ul>
+
+  <div class="admin-info">
+    <p>Welcome, <%= adminName %>!</p>
+    <a href="/logout">Logout</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>All Users</h1>
+    <% if (users.length > 0) { %>
+        <ul>
+            <% users.forEach(user => { %>
+                <li>
+                    <strong><%= user.name %></strong> - <%= user.email %> - <%= user.role %>
+                    <a href="/users/<%= user.user_id %>/edit">Edit</a>
+                    <a href="/users/<%= user.user_id %>/delete">Delete</a>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No users found.</p>
+    <% } %>
+</body>
+</html>
+s

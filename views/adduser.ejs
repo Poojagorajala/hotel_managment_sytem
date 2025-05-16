@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New User</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
+        </nav>
+        <h1>Add users detailss</h1>
+    </header>
+
+    <main class="container">
+        <h2>Add New User</h2>
+        <form action="/add" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <input type="text" name="role" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Add User</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My users Website</p>
+    </footer>
+</body>
+</html>

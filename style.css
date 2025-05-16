@@ -1,0 +1,87 @@
+/* Form Specific Styles */
+form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea,
+form select {
+    width: calc(100% - 22px); /* Adjust for padding and border */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+form textarea {
+    resize: vertical; /* Allow vertical resizing of textarea */
+    min-height: 100px;
+}
+
+form input[type="checkbox"],
+form input[type="radio"] {
+    margin-right: 5px;
+}
+
+form .form-group {
+    margin-bottom: 15px;
+}
+
+form .form-group label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: normal;
+}
+
+form button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+form .error-message {
+    color: #dc3545;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+form .success-message {
+    color: #28a745;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Optional: Styling for inline form elements */
+form .inline-group label {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: normal;
+}
+
+form .inline-group input[type="radio"],
+form .inline-group input[type="checkbox"] {
+    vertical-align: middle;
+}
