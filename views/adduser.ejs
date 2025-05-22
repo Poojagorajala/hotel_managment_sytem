@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -43,5 +43,33 @@
     <footer>
         <p>&copy; <%= new Date().getFullYear() %> My users Website</p>
     </footer>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New User</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Add New User</h1>
+    <form action="/users/add" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" name="name" required><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" required><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" required><br>
+
+        <label for="role">Role:</label><br>
+        <input type="text" name="role" required><br><br>
+
+        <button type="submit">Add User</button>
+    </form>
+    <p><a href="/users">Back to Users List</a></p>
 </body>
 </html>

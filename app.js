@@ -13,10 +13,13 @@ const roomsRoute = require('./routes/roomsroute');
 const paymentRoute = require('./routes/paymentroute');
 const hotelRoute = require('./routes/hotelroute');
 const bookingRoute = require('./routes/bookingroute');
+const dashboardRoute=require('./routes/dashboardroute');
 const app = express();
 
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
+
+
 
 // Session configuration
 app.use(session({
@@ -38,7 +41,8 @@ app.use('/payments', paymentRoute);
 app.use('/bookings', bookingRoute);
 app.use('/rooms', roomsRoute);
 app.use('/hotels', hotelRoute);
-app.use('/', userRoute);
+app.use('/users', userRoute);
+app.use('/dashboard',dashboardRoute);
 
 // Initialize DB and start server
 (async () => {

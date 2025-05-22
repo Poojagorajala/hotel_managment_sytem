@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,5 +44,33 @@
     <footer>
         <p>&copy; <%= new Date().getFullYear() %> My Awesome Website</p>
     </footer>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Edit User</h1>
+    <form action="/users/<%= user.user_id %>/update" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" name="name" value="<%= user.name %>" required><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" value="<%= user.email %>" required><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" placeholder="Leave blank to keep current password"><br>
+
+        <label for="role">Role:</label><br>
+        <input type="text" name="role" value="<%= user.role %>" required><br><br>
+
+        <button type="submit">Update User</button>
+    </form>
+    <p><a href="/users">Back to Users List</a></p>
 </body>
 </html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete User</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
+        </nav>
+        <h1>Delete User</h1>
+    </header>
+
+    <main class="container">
+        <% if (user) { %>
+            <p>Are you sure you want to delete the following user?</p>
+            <ul>
+                <li><strong>User ID:</strong> <%= user.user_id %></li>
+                <li><strong>Name:</strong> <%= user.name %></li>
+                <li><strong>Email:</strong> <%= user.email %></li>
+                <li><strong>Role:</strong> <%= user.role %></li>
+            </ul>
+
+            <form action="/users/<%= user.user_id %>/delete" method="POST">
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="/users" class="btn btn-secondary">Cancel</a>
+            </form>
+        <% } else { %>
+            <p class="error-message">User not found.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Awesome Website</p>
+    </footer>
+</body>
+</html>

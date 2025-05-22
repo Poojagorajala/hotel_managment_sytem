@@ -4,7 +4,7 @@ const {
     insertUser,
     userLogin,
     getallusers,
-    updateusers,
+    getuserbyid,
     deleteUsers
 } = require('../models/usersQuery');
 
@@ -17,8 +17,8 @@ exports.adduser = async (req, res) => {
     const { name, email, password, role } = req.body;
     // ... (length validations) ...
     try {
-        await insertUser(name, email, password, role); // Temporarily use plain password
-        res.redirect('/');
+        await insertUser(name, email, password, role); 
+        res.redirect('/users');
     } catch (error) {
         console.error('Error adding user:', error);
         return res.status(500).send('failed to add user');
@@ -126,21 +126,32 @@ exports.getalluserpage = async (req, res) => {
 // };
 
 // POST: Update user details
-exports.updateuserdetails = async (req, res) => {
-    const { user_id } = req.params;
-    const updateFields = req.body;
-    try {
-        // Hash the password if it's being updated
-        if (updateFields.password) {
-            updateFields.password = await bcrypt.hash(updateFields.password, 10);
-        }
-        await updateusers(user_id, updateFields);
-        res.redirect('/users');
-    } catch (error) {
-        console.error('Error updating user:', error.message);
-        res.status(500).send('Failed to update user');
-    }
-};
+// exports.updateuserdetails = async (req, res) => {
+//     const { user_id } = req.params;
+//     const updateFields = req.body;
+//     try {
+//         // Hash the password if it's being updated
+//         if (updateFields.password) {
+//             updateFields.password = await bcrypt.hash(updateFields.password, 10);
+//         }
+//         await updateusers(user_id, updateFields);
+//         res.redirect('/users');
+//     } catch (error) {
+//         console.error('Error updating user:', error.message);
+//         res.status(500).send('Failed to update user');
+//     }
+// };
+
+
+// exports.edituserpage = async (req, res) => {
+//     const user_id = req.params.user_id;
+//     try {
+//         const user = await getuserbyid(user_id);
+//         res.render('edituser', { user });
+//     } catch (error) {
+//         res.status(500).send('Error loading edit page');
+//     }
+// };
 
 // POST: Delete user
 exports.deleteuser = async (req, res) => {
@@ -148,6 +159,7 @@ exports.deleteuser = async (req, res) => {
     try {
         await deleteUsers(user_id);
         res.redirect('/users');
+        console.log('deleted the users')
     } catch (error) {
         console.error('Error deleting user:', error.message);
         res.status(500).send('Failed to delete user');
@@ -188,5 +200,21 @@ exports.userlogin = async (req, res) => {
             return res.status(401).send('Invalid email or password');
         }
         res.status(500).send('Internal Server Error');
+    }
+};
+
+exports.edituserpage = async (req, res) => {
+    const user_id = req.params.user_id;
+
+    try {
+        const user = await getuserbyid(user_id);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.render('edituser', { user });
+        console.log('edited the user')
+    } catch (error) {
+        console.error('Error loading edit page:', error.message);
+        res.status(500).send('Error loading edit page');
     }
 };
