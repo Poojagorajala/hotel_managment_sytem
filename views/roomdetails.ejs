@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room Details</title>
+</head>
+<body>
+    <h1>Room Details</h1>
+
+    <p><strong>Room ID:</strong> <%= room.room_id %></p>
+    <p><strong>Hotel ID:</strong> <%= room.hotel_id %></p>
+    <p><strong>Room Type:</strong> <%= room.room_type %></p>
+    <p><strong>Price:</strong> ₹<%= room.price %></p>
+    <p><strong>Availability:</strong> <%= room.availability === true || room.availability === 'true' ? 'Available' : 'Unavailable' %></p>
+
+    <a href="/rooms/<%= room.room_id %>/edit">Edit</a> |
+    <a href="/rooms">Back to List</a>
+</body>
+</html>

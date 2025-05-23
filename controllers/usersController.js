@@ -5,197 +5,136 @@ const {
     userLogin,
     getallusers,
     getuserbyid,
-    deleteUsers
+    deleteUsers,
+    updateusers
 } = require('../models/usersQuery');
 
-
+// Render Add User page
 exports.adduserpage = (req, res) => {
     res.render('adduser');
 };
 
+// Add new user
 exports.adduser = async (req, res) => {
     const { name, email, password, role } = req.body;
-    // ... (length validations) ...
+
+    // Basic validations
+    const maxLength = 100;
+    if (name.length > maxLength) return res.render('adduser', { errorMessage: `Name cannot exceed ${maxLength} characters.` });
+    if (email.length > maxLength) return res.render('adduser', { errorMessage: `Email cannot exceed ${maxLength} characters.` });
+    if (role.length > maxLength) return res.render('adduser', { errorMessage: `Role cannot exceed ${maxLength} characters.` });
+    if (password.length < 6) return res.render('adduser', { errorMessage: 'Password must be at least 6 characters long.' });
+
     try {
-        await insertUser(name, email, password, role); 
+        // insertUser in userQuery.js already hashes password, so pass plain password
+        await insertUser(name, email, password, role);
         res.redirect('/users');
     } catch (error) {
-        console.error('Error adding user:', error);
-        return res.status(500).send('failed to add user');
+        console.error('Error adding user:', error.message);
+        let errorMessage = 'Failed to add user.';
+        if (error.message.includes('value too long')) {
+            errorMessage = 'One or more fields exceed the allowed length in the database.';
+        }
+        res.render('adduser', { errorMessage });
     }
 };
 
-// exports.adduser = async (req, res) => {
-//     const { name, email, password, role } = req.body;
-
-//     // Server-side validation for length
-//     const maxLength = 100; // You can adjust this value
-//     if (name.length > maxLength) {
-//         return res.render('adduser', { errorMessage: `Name cannot exceed ${maxLength} characters.` });
-//     }
-//     if (email.length > maxLength) {
-//         return res.render('adduser', { errorMessage: `Email cannot exceed ${maxLength} characters.` });
-//     }
-//     if (role.length > maxLength) {
-//         return res.render('adduser', { errorMessage: `Role cannot exceed ${maxLength} characters.` });
-//     }
-//     if (password.length < 6) { // Example minimum password length
-//         return res.render('adduser', { errorMessage: 'Password must be at least 6 characters long.' });
-//     }
-
-//     try {
-//         const hashedPassword = await bcrypt.hash(password, 10);
-//         await insertUser(name, email, hashedPassword, role);
-//         res.redirect('/'); // Redirect to the user list
-//     } catch (error) {
-//         console.error('Error adding user:', error);
-//         let errorMessage = 'Failed to add user.';
-//         if (error.message.includes('value too long')) {
-//             errorMessage = 'One or more fields exceed the allowed length in the database.';
-//         }
-//         return res.render('adduser', { errorMessage });
-//     }
-// };
-
+// Get all users page
 exports.getalluserpage = async (req, res) => {
     try {
         const users = await getallusers();
-        res.render('users',{users});
+        res.render('users', { users });
     } catch (error) {
         console.error('Error fetching users:', error.message);
-        res.status(500).send('failed in users page');
+        res.status(500).send('Failed to fetch users');
     }
 };
 
-// // GET: All users page
-// // exports.getalluserpage = async (req, res) => {
-// //     try {
-// //         const users = await getallusers();
-// //         res.render('users', { users });
-// //     } catch (error) {
-// //         console.error('Error fetching users:', error.message);
-// //         res.status(500).send('Failed to fetch users');
-// //     }
-// // };
+// Render edit user page by id
+exports.edituserpage = async (req, res) => {
+    const user_id = req.params.user_id;
+    try {
+        const user = await getuserbyid(user_id);
+        if (!user) return res.status(404).send('User not found');
+        res.render('edituser', { user });
+    } catch (error) {
+        console.error('Error loading edit page:', error.message);
+        res.status(500).send('Error loading edit page');
+    }
+};
 
-// // // GET: Add user form page
-// exports.adduserpage = (req, res) => {
-//     res.render('adduser');
-// };
+exports.updateuserdetails = async (req, res) => {
+    const { user_id } = req.params;
+    const updateFields = req.body;
 
-// // // POST: Add user
-// // exports.adduser = async (req, res) => {
-// //     const { name, email, password, role } = req.body;
-// //     try {
-// //         // Hash the password before saving
-// //         const hashedPassword = await bcrypt.hash(password, 10);
-// //         await insertUser(name, email, hashedPassword, role);
-// //         res.redirect('/users');
-// //     } catch (error) {
-// //         console.error('Error adding user:', error.message);
-// //         res.status(500).send('Failed to add user');
-// //     }
-// // };
+    // Define max lengths for each field based on your DB schema
+    const maxLengths = {
+        name: 100,
+        email: 100,
+        password: 100,
+        role: 50
+    };
 
-// // In your controllers/usersController.js
-// exports.adduser = async (req, res) => {
-//     const { name, email, password, role } = req.body;
-//     try {
-//         const hashedPassword = await bcrypt.hash(password, 10);
-//         await insertUser(name, email, hashedPassword, role);
-//         res.redirect('/users');
-//     } catch (error) {
-//         console.error('Error adding user:', error.message);
-//         // Check for specific database error (e.g., if your query function throws a specific error object)
-//         let errorMessage = 'Failed to add user';
-//         if (error.message.includes('value too long')) {
-//             errorMessage = 'One or more fields have exceeded the maximum allowed length.';
-//         }
-//         return res.render('adduser', { errorMessage }); // Pass errorMessage to the view
-//     }
-// };
-// // In your controllers/usersController.js
-// exports.getalluserpage = async (req, res) => {
-//     try {
-//         const users = await getallusers();
-//         res.render('users', { users, errorMessage: null }); // Pass errorMessage: null
-//     } catch (error) {
-//         console.error('Error fetching users:', error.message);
-//         res.render('users', { users: [], errorMessage: 'Failed to fetch users.' }); // Pass an error message
-//     }
-// };
+    // Validate field lengths
+    for (const field in updateFields) {
+        if (updateFields[field] && maxLengths[field] && updateFields[field].length > maxLengths[field]) {
+            return res.status(400).send(`${field} exceeds maximum length of ${maxLengths[field]} characters.`);
+        }
+    }
 
-// POST: Update user details
-// exports.updateuserdetails = async (req, res) => {
-//     const { user_id } = req.params;
-//     const updateFields = req.body;
-//     try {
-//         // Hash the password if it's being updated
-//         if (updateFields.password) {
-//             updateFields.password = await bcrypt.hash(updateFields.password, 10);
-//         }
-//         await updateusers(user_id, updateFields);
-//         res.redirect('/users');
-//     } catch (error) {
-//         console.error('Error updating user:', error.message);
-//         res.status(500).send('Failed to update user');
-//     }
-// };
+    try {
+        // Hash password if present
+        if (updateFields.password) {
+            updateFields.password = await bcrypt.hash(updateFields.password, 10);
+        }
+
+        console.log('🛠️ Update payload:', updateFields); // Helpful for debugging
+        await updateusers(user_id, updateFields);
+        res.redirect('/users');
+    } catch (error) {
+        console.error('Error updating user:', error);  // Log full error object
+        res.status(500).send('Failed to update user');
+    }
+};
 
 
-// exports.edituserpage = async (req, res) => {
-//     const user_id = req.params.user_id;
-//     try {
-//         const user = await getuserbyid(user_id);
-//         res.render('edituser', { user });
-//     } catch (error) {
-//         res.status(500).send('Error loading edit page');
-//     }
-// };
-
-// POST: Delete user
+// Delete user by id
 exports.deleteuser = async (req, res) => {
     const { user_id } = req.params;
     try {
         await deleteUsers(user_id);
+        console.log('Deleted user:', user_id);
         res.redirect('/users');
-        console.log('deleted the users')
     } catch (error) {
         console.error('Error deleting user:', error.message);
         res.status(500).send('Failed to delete user');
     }
 };
 
-// POST: User login
+// User login handler
 exports.userlogin = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Fetch user by email
-        const user = await userLogin(email);
+        // userLogin in userQuery.js expects (email, password), but your userQuery's userLogin only needs email to fetch user first
+        // So, modify call to userLogin(email) here, then compare passwords here
+        const poolUser = await userLogin(email, password); // But your userLogin in userQuery does both lookup + password check
 
-        if (!user) {
-            return res.status(401).send('Invalid email or password');
-        }
+        // Actually, your userQuery's userLogin does password validation and returns user info on success
+        // So here just call it, it throws error on failure
+        // So just do:
+        const user = await userLogin(email, password);
 
-        // Compare input password with hashed password
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).send('Invalid email or password');
-        }
-
-        // Set session data after successful login
+        // Set session after successful login
         req.session.user = {
             id: user.user_id,
             name: user.name,
             role: user.role
         };
 
-        res.redirect('/home'); // Or wherever your dashboard/home is
+        res.redirect('/home');
     } catch (error) {
-        console.error('Error during login:', error.message);
-        // Consider different error responses based on the type of error
+        console.error('Login error:', error.message);
         if (error.message === 'Invalid email or password') {
             return res.status(401).send('Invalid email or password');
         }
@@ -203,18 +142,17 @@ exports.userlogin = async (req, res) => {
     }
 };
 
-exports.edituserpage = async (req, res) => {
-    const user_id = req.params.user_id;
-
+exports.showDeleteConfirmation = async (req, res) => {
+    const { user_id } = req.params;
     try {
-        const user = await getuserbyid(user_id);
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        res.render('edituser', { user });
-        console.log('edited the user')
+        const pool = getpool();
+        const result = await pool.query('SELECT * FROM users WHERE user_id = $1', [user_id]);
+        const user = result.rows[0];
+
+        res.render('deleteuser', { user });
     } catch (error) {
-        console.error('Error loading edit page:', error.message);
-        res.status(500).send('Error loading edit page');
+        console.error('Error fetching user for delete confirmation:', error.message);
+        res.status(500).send('Error loading delete confirmation page');
     }
 };
+

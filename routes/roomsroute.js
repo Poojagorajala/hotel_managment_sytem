@@ -3,25 +3,29 @@ const router = express.Router();
 const RoomsController = require('../controllers/roomsController');
 
 // GET: All rooms page
-router.get('/rooms', RoomsController.getallroomspage);
+router.get('/', RoomsController.getallroomspage);
 
 // GET: Add room form
-router.get('/rooms/add', RoomsController.addrooms);
+router.get('/add', RoomsController.addrooms);
 
 // POST: Add a new room
-router.post('/rooms/add', RoomsController.addRooms);
+router.post('/add', RoomsController.addRooms);
 
-// POST: Update a room
-router.post('/rooms/:room_id/update', RoomsController.updateRooms);
+// GET: Show edit room form by room_id
+router.get('/:room_id/edit', RoomsController.editRooms);
+
+router.post('/:room_id/update', RoomsController.updateRooms);
 
 // GET: Get available room details (assuming by ID)
-router.get('/rooms/:room_id/available', RoomsController.getavailableRooms);
+router.get('/:room_id/available', RoomsController.getavailableRooms);
 
 // GET: Get room by hotel ID
-router.get('/rooms/hotel/:hotel_id', RoomsController.getroombyhotel);
+router.get('/hotel/:hotel_id', RoomsController.getroombyhotel);
 
 // GET: Get room by room ID
-router.get('/rooms/:room_id', RoomsController.getroomsbyid);
+router.get('/:room_id', RoomsController.getroomsbyid);
+
+// POST: Delete a room by room_id
+router.post('/:room_id/delete', RoomsController.deleteRoom);
 
 module.exports = router;
-

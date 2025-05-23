@@ -1,22 +1,6 @@
 const { getpool } = require('../db');
 const bcrypt = require('bcryptjs'); // Corrected import
 
-// const insertUser = async (name, email, password, role) => {
-//     try {
-//         const pool = getpool();
-//         const hashedPassword = await bcrypt.hash(password, 10);
-//         const query = `
-//             INSERT INTO users(name, email, password, role)
-//             VALUES ($1, $2, $3, $4)
-//             RETURNING *`;
-//         const result = await pool.query(query, [name, email, hashedPassword, role]);
-//         console.log('User inserted:', result.rows[0]);
-//         return result.rows[0];
-//     } catch (error) {
-//         console.error('Error in inserting user values:', error.message);
-//         throw error; // It's good practice to re-throw the error for higher-level handling
-//     }
-// };
 
 const insertUser = async (name, email, password, role) => {
     try {
@@ -116,6 +100,20 @@ const updateusers = async (user_id, updateFields) => {
     }
 };
 
+
+const getuserbyid = async (user_id) => {
+    try {
+        const pool = getpool();
+        const query = `SELECT * FROM users WHERE user_id = $1`;
+        const result = await pool.query(query, [user_id]);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error fetching user by ID:', error.message);
+        throw error;
+    }
+};
+
+
 const deleteUsers = async (user_id) => {
     try {
         const pool = getpool();
@@ -132,4 +130,4 @@ const deleteUsers = async (user_id) => {
     }
 };
 
-module.exports = { insertUser, userLogin, getallusers, updateusers, deleteUsers };
+module.exports = { insertUser, userLogin, getallusers, getuserbyid, deleteUsers,updateusers };

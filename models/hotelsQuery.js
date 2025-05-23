@@ -77,4 +77,18 @@ const gethotelbyid=async(hotel_id)=>{
     }
 }
 
-module.exports={insertHotel,getallhotels,deletehotel,updatehotel,gethotelbyid};
+const edithotel = async (req, res) => {
+    try {
+        const hotel_id = req.params.hotel_id;
+        const hotel = await hotelQuery.gethotelbyid(hotel_id);
+        if (!hotel) {
+            return res.status(404).send('Hotel not found');
+        }
+        res.render('edithotel', { hotel });
+    } catch (error) {
+        console.error('Error showing hotel edit form:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports={insertHotel,getallhotels,deletehotel,updatehotel,gethotelbyid,edithotel};

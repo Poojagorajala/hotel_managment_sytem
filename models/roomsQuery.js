@@ -98,21 +98,37 @@ const updateroom = async(hotel_id, room_type, price, availability, room_id) => {
     }
 }
 
-const deleteroom=async(room_id)=>{
-    try{
-    const pool=getpool();
-  
-    const query = `DELETE FROM rooms WHERE room_id = $1 RETURNING *`;
-
-    const result=await pool.query(query,[room_id]);
-    console.log(result);
-    return result.rows[0];
-    }
-     catch(error){
-        console.error('there is error in deleting',error.message);
+const deleteroom = async (room_id) => {
+    try {
+        const pool = getpool();
+        const query = `DELETE FROM rooms WHERE room_id = $1 RETURNING *`;
+        const result = await pool.query(query, [room_id]);
+        console.log(result); // ✅ will show success/failure
+        return result.rows[0]; // important: return deleted row
+    } catch (error) {
+        console.error('Error deleting room:', error.message);
         throw error;
-     }
-}
+    }
+};
+
+const editRooms = async (req, res) => {
+  const roomId = req.params.room_id;
+  try {
+    const pool=getpool();
+
+    const result = await pool.query('SELECT * FROM rooms WHERE room_id = $1', [roomId]);
+    if (result.rows.length === 0) {
+      return res.status(404).send('Room not found');
+    }
+    const room = result.rows[0];
+    res.render('editRoom', { room });  // make sure the template 'editRoom' receives 'room'
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+};
 
 
-module.exports={insertrooms,updateroom,getAvailablerooms,getallrooms,getroombyHotel,getroombyId}
+
+
+module.exports={insertrooms,editRooms,updateroom,getAvailablerooms,getallrooms,getroombyHotel,getroombyId,deleteroom};

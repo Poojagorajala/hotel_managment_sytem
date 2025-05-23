@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Room</title>
+</head>
+<body>
+    <h1>Edit Room</h1>
+
+    <form action="/rooms/<%= room.room_id %>/update" method="POST">
+        <label for="hotel_id">Hotel ID:</label>
+        <input type="text" name="hotel_id" value="<%= room.hotel_id %>" required><br>
+
+        <label for="room_type">Room Type:</label>
+        <input type="text" name="room_type" value="<%= room.room_type %>" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" value="<%= room.price %>" required><br>
+
+      <label for="availability">Availability:</label>
+      <select name="availability" required>
+      <option value="true" <%= room.availability === true ? 'selected' : '' %>>true</option>
+      <option value="false" <%= room.availability === false ? 'selected' : '' %>>false</option>
+
+        <button type="submit">Update Room</button>
+    </form>
+
+    <a href="/rooms">Cancel</a>
+</body>
+</html>
